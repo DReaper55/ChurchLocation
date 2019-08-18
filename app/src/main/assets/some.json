@@ -1,0 +1,35 @@
+[
+	{
+		"name" : "surulere",
+		"latitude" : "6.4847577",
+		"longitude" : "3.359520",
+		"place" : "lagos",
+		"region" : "surulere",
+		"leader" : "Mr Chris Ogbonnaya",
+		"number" : "01 898 0148",
+		"address" : "16/18 Akanbi close, Alaka, Lagos",
+		"disciples" : "N/A"
+	},
+	{
+		"name" : "ikeja",
+		"latitude" : "6.626152",
+		"longitude" : "3.362683",
+		"place" : "lagos",
+		"region" : "ikeja",
+		"leader" : "N/A",
+		"number" : "0803 344 0565",
+		"address" : "Otunba Jobi Fele Way, Agidingbi, Ikeja",
+		"disciples" : "N/A"
+	},
+	{
+		"name" : "ikorodu",
+		"latitude" : "6.624966",
+		"longitude" : "3.548801",
+		"place" : "lagos",
+		"region" : "ikorodu",
+		"leader" : "N/A",
+		"number" : "0802 367 6605",
+		"address" : "N/A",
+		"disciples" : "N/A"
+	}
+]
