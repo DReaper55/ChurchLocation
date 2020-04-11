@@ -1,35 +1,67 @@
 [
 	{
-		"name" : "surulere",
-		"latitude" : "6.4847577",
-		"longitude" : "3.359520",
-		"place" : "lagos",
+		"name" : "Calabar International Church",
+		"latitude" : "5.032178333333333",
+		"longitude" : "8.346838333333332",
+		"state" : "Cross River",
+		"region" : "Calabar International Church",
+		"leader" : "Mr Dipo Ajayi",
+		"number" : "07033727226",
+		"address" : "16/18 Akanbi close, Alaka, Lagos",
+		"disciples" : "N/A",
+		"about" : "N/A",
+        "country" : "Nigeria"
+	},
+	{
+		"name" : "port harcourt",
+		"latitude" : "4.816635",
+		"longitude" : "7.050708",
+		"state" : "lagos",
 		"region" : "surulere",
 		"leader" : "Mr Chris Ogbonnaya",
 		"number" : "01 898 0148",
 		"address" : "16/18 Akanbi close, Alaka, Lagos",
-		"disciples" : "N/A"
+		"disciples" : "N/A",
+		"about" : "N/A",
+        "country" : "Nigeria"
+	},
+	{
+		"name" : "surulere",
+		"latitude" : "6.4847577",
+		"longitude" : "3.359520",
+		"state" : "lagos",
+		"region" : "surulere",
+		"leader" : "Mr Chris Ogbonnaya",
+		"number" : "01 898 0148",
+		"address" : "16/18 Akanbi close, Alaka, Lagos",
+		"disciples" : "N/A",
+		"about" : "N/A",
+        "country" : "Nigeria"
 	},
 	{
 		"name" : "ikeja",
 		"latitude" : "6.626152",
 		"longitude" : "3.362683",
-		"place" : "lagos",
+		"state" : "lagos",
 		"region" : "ikeja",
 		"leader" : "N/A",
 		"number" : "0803 344 0565",
 		"address" : "Otunba Jobi Fele Way, Agidingbi, Ikeja",
-		"disciples" : "N/A"
+		"disciples" : "N/A",
+		"about" : "N/A",
+        "country" : "Nigeria"
 	},
 	{
 		"name" : "ikorodu",
 		"latitude" : "6.624966",
 		"longitude" : "3.548801",
-		"place" : "lagos",
+		"state" : "lagos",
 		"region" : "ikorodu",
 		"leader" : "N/A",
 		"number" : "0802 367 6605",
 		"address" : "N/A",
-		"disciples" : "N/A"
+		"disciples" : "N/A",
+		"about" : "N/A",
+        "country" : "Nigeria"
 	}
 ]

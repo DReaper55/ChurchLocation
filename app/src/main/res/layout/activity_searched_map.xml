@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SearchedMapActivity"
+    android:background="@android:color/darker_gray"
+    tools:targetApi="lollipop">
+
+    <fragment
+        android:id="@+id/search_map_fragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        tools:context=".Activity.SearchedMapActivity" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_map_fragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/name_of_church"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="Name of Church"
+            android:paddingTop="10dp"
+            android:textSize="25sp"
+            android:textColor="@android:color/black"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/church_leader_name"
+            android:layout_width="300dp"
+            android:layout_height="70dp"
+            android:text="Name of Leader"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:paddingTop="20dp"
+            android:paddingLeft="10dp"
+            android:layout_below="@id/name_of_church"/>
+
+            <ImageView
+                android:id="@+id/call_church_leader"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/church_leader_name"
+                android:layout_below="@id/name_of_church"
+                android:layout_marginTop="20dp"
+                android:src="@android:drawable/sym_action_call"
+                />
+            <ImageView
+                android:id="@+id/church_leader_dm"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/call_church_leader"
+                android:layout_below="@id/name_of_church"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:src="@android:drawable/btn_star_big_on"
+                />
+            <TextView
+                android:id="@+id/membersID"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:text="Members:"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:paddingTop="20dp"
+                android:paddingLeft="10dp"
+                android:layout_below="@id/church_leader_name"/>
+
+            <TextView
+                android:id="@+id/church_members_number"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:text="200"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:paddingTop="20dp"
+                android:paddingLeft="30dp"
+                android:layout_toRightOf="@+id/membersID"
+                android:layout_below="@id/church_leader_name"/>
+
+            <ImageView
+                android:id="@+id/barrier1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/straight_line"
+                android:layout_below="@id/membersID"/>
+
+             <TextView
+                 android:id="@+id/addressID"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:text="Church Address"
+                 android:textAlignment="center"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="23sp"
+                android:paddingTop="20dp"
+                android:layout_below="@id/barrier1"/>
+
+            <TextView
+                android:id="@+id/church_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="16/18 Akanbi close, Alaka, Lagos"
+                android:maxLength="400"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:layout_below="@id/addressID"/>
+
+            <TextView
+                android:id="@+id/church_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nigeria, Cross Rivers tate"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_below="@id/church_address"/>
+
+            <TextView
+                android:id="@+id/church_lat_long"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Church Address"
+                android:textAlignment="center"
+                android:paddingTop="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:layout_below="@id/church_country"/>
+
+            <ImageView
+                android:id="@+id/barrier2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/straight_line"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/church_lat_long"/>
+
+            <TextView
+                android:id="@+id/churchDetsID"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:text="About"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="23sp"
+                android:paddingTop="20dp"
+                android:layout_below="@id/barrier2"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/churchDetsID"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/church_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="208. Remember me
+When Jesus gathered the twelve disciples, To share the Passover meal once more, Breaking the bread, Wine flowing red:  This is a sign of a brand new promise, I will be poured out to set you free. Do this for Me; remember Me.
+Remember Me. Remember Me.  Oh, help me not forget the grace When Jesus died and took my place.  Remember Me. Remember Me.  Until we’re standing face to face,  Remember Me.
+When Peter said he would not deny Him You know, I’m ready to die with You.  Three times tonight, you will deny.  Then after Jesus had been arrested, Peter denied Him for the third time. The Lord looked at Him;  the love in His eyes.  When Jesus saw the adult’rous woman; And He was asked if she should be stoned. He made not a sound,  He wrote on the ground.  He said, The one without sin among you Shall be the one to throw the first stone.  All walked away.   Go, sin no more.  When Jesus spoke to His twelve disciples After the victory from the grave.  To all the world; teach them of Me. Go make disciples of ev’ry nation; Baptizing them, teaching them the way. Until the end, I am with you.”
+"
+                    android:textAlignment="center"
+                    android:maxWidth="300dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

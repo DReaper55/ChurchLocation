@@ -16,7 +16,8 @@ public class ChurchLocation {
         this.churchLng = churchLng;
     }
 
-    public ChurchLocation(double churchLat, double churchLng, Location churchLocation) {
+    public ChurchLocation(String churchName, double churchLat, double churchLng, Location churchLocation) {
+        this.churchName = churchName;
         this.churchLat = churchLat;
         this.churchLng = churchLng;
         this.churchLocation = churchLocation;

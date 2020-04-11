@@ -8,4 +8,47 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppThemeHymn" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryHymn</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkHymn</item>
+        <item name="colorAccent">@color/colorAccentHymn</item>
+    </style>
+
+    <style name="HoloThemes" parent="AppThemeHymn">
+        <item name="android:colorForeground">@android:color/background_dark</item>
+        <item name="android:colorForegroundInverse">@color/colorAccent</item>
+        <item name="android:colorBackground">@android:color/white</item>
+    </style>
+
+    <style name="Theme.Design.NoActionBar" parent="HoloThemes">
+    </style>
+
+    <style name="AppTheme.NoActionBar." parent="Theme.Design.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar"> false</item>
+    </style>
+
+    <style name="FontStyle">
+        <item name="android:textSize"> 23sp </item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:gravity"> center</item>
+    </style>
+
+    <style name="RecycleStyle">
+        <item name="android:textSize"> 18sp </item>
+    </style>
+
+    <style name="fab_label">
+        <item name="android:background"> @drawable/fab_background </item>
+        <item name="android:textColor"> @color/colorWhiteHymn </item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
+    </style>
+
+
 </resources>

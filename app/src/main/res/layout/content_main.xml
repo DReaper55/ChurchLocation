@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Activity.SearchChurchesTool"
+    tools:showIn="@layout/activity_search_churches_tool">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/allLocationSearch"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="34dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/find_my_location"
+                        android:layout_toRightOf="@+id/all_locations_textView"/>
+
+                    <TextView
+                        android:id="@+id/all_locations_textView"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="Find all locations"
+                        android:layout_centerVertical="true"
+                        android:maxLength="@android:integer/config_mediumAnimTime"
+                        android:textSize="25sp"
+                        android:textColor="@android:color/black"
+                        android:paddingLeft="40dp"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_church_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

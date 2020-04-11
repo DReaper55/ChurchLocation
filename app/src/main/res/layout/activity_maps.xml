@@ -1,9 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.MapsActivity" />
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fragment_maps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Activity.MapsActivity" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/relateLayoutId"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:background="@drawable/oval"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/searchViewText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:ems="10"
+            android:text="Find a location"
+            android:paddingTop="10dp"
+            android:paddingLeft="40dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/searchLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/searchViewText"
+            android:layout_alignBottom="@+id/searchViewText"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@+id/searchViewText"
+            android:layout_toRightOf="@+id/searchViewText"
+            app:srcCompat="@drawable/location_search" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/findMyLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_above="@id/findNearestChurch"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        app:srcCompat="@drawable/find_my_location"
+        tools:ignore="VectorDrawableCompat" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/findNearestChurch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/map"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="69dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/find_nearest_location"
+        tools:ignore="VectorDrawableCompat" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    </LinearLayout>
