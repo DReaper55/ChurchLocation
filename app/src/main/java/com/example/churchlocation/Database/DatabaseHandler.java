@@ -17,8 +17,6 @@ import androidx.annotation.Nullable;
 public class DatabaseHandler extends SQLiteOpenHelper {
     private Context context;
 
-    private Boolean around;
-
     public DatabaseHandler(@Nullable Context context) {
         super(context, ChurchDBConstants.DB_NAME, null, ChurchDBConstants.DB_VERSION);
         this.context = context;

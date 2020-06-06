@@ -34,7 +34,7 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.ViewHolder> implem
 
     @Override
     public myAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.hymn_list_item, viewGroup, false);
 
         return new ViewHolder(view);
     }

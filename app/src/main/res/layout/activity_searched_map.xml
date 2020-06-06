@@ -13,7 +13,23 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        tools:context=".Activity.SearchedMapActivity" />
+        tools:context=".Activity.SearchedMapActivity">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp">
+
+        <ImageButton
+            android:id="@+id/goBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/go_back_ic"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/colorPrimary"
+            />
+        </RelativeLayout>
+    </fragment>
 
     <ScrollView
         android:layout_width="match_parent"

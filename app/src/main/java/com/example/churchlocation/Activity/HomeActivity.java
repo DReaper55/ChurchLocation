@@ -9,8 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.churchlocation.Adapter.YoutubeThumbAdapter;
+import com.example.churchlocation.Database.DatabaseHandler;
+import com.example.churchlocation.Database.LinksDB;
 import com.example.churchlocation.Model.TubeThumbs;
 import com.example.churchlocation.R;
+import com.example.churchlocation.Utils.ConnectToChurchDB;
 import com.example.churchlocation.Utils.ConstantsRandom;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -55,12 +59,16 @@ public class HomeActivity extends Fragment {
     private ArrayList<TubeThumbs> thumbsArrayList = new ArrayList<>();
     private YoutubeThumbAdapter youtubeThumbAdapter;
 
-    RecyclerView recyclerView;
+    private List<String> linkLists;
 
-    View views;
+    private DatabaseHandler db;
+    private LinksDB linksDB;
+    private ConnectToChurchDB connect = new ConnectToChurchDB();
+
+    private View views;
     Context ctx;
 
-    private boolean connected;
+    private boolean connected = false;
 
     public HomeActivity() {
     }
@@ -69,6 +77,7 @@ public class HomeActivity extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(getContext());
+
     }
 
     @Nullable
@@ -77,36 +86,23 @@ public class HomeActivity extends Fragment {
         View view;
         views = container.getRootView();
 
-        do{
-            ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            connected = activeNetwork !=null && activeNetwork.isConnectedOrConnecting();
-            if(connected){
-                view = inflater.inflate(R.layout.activity_home, container, false);
+        connected = checkConnection();
 
-                String[] videoIDArray = getResources().getStringArray(R.array.video_id_array);
+        db = connect.getChurches(inflater.getContext());
+        linksDB = connect.getLinks(inflater.getContext());
 
-                List<String> randomIDArray = new ArrayList<>(Arrays.asList(videoIDArray));
+        view = showHomePage(connected, container, inflater);
 
-                Collections.shuffle(randomIDArray);
-
-                for (String s : randomIDArray) {
-                    TubeThumbs tubeThumbs = new TubeThumbs();
-                    tubeThumbs.setVideoId(s);
-
-                    thumbsArrayList.add(tubeThumbs);
-                }
-
-                youtubeThumbAdapter = new YoutubeThumbAdapter(getActivity(), thumbsArrayList);
-                Log.d("Network", "Connected");
-                break;
-
-            } else {
-                Log.d("Network", "Not Connected");
-                Toast.makeText(getContext(), "Cannot connect to internet", Toast.LENGTH_LONG).show();
-                view = inflater.inflate(R.layout.progress_bar, container, false);
+        SwipeRefreshLayout containerSwipe = view.findViewById(R.id.container);
+        containerSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getActivity().recreate();
             }
-        } while (!connected);
+        });
+
+        Log.d("FirstActtt ", String.valueOf(db.totalContact()));
+
         return view;
     }
 
@@ -117,24 +113,62 @@ public class HomeActivity extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Hot News");
 
         if(connected){
-            recyclerView = getActivity().findViewById(R.id.recyclerView);
+            RecyclerView recyclerView = getActivity().findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
             recyclerView.setAdapter(youtubeThumbAdapter);
         }
 
 //        Menu menu = navView.getMenu();
 //        menu.findItem(R.id.navigation_home).setIcon(getResources().getDrawable(R.drawable.ic_home_black_24dp));
-
-        SwipeRefreshLayout containerSwipe = views.findViewById(R.id.container);
-        containerSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Log.d("Refresh", "Refresh");
-            }
-        });
-
     }
 
+    private Boolean checkConnection(){
+        Boolean connection;
+        ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        connection = activeNetwork !=null && activeNetwork.isConnectedOrConnecting();
+        return connection;
+    }
+
+    private View showHomePage(Boolean connect, ViewGroup container, LayoutInflater inflater){
+        if(connect){
+            linkLists = linksDB.getAllContacts();
+
+            Collections.shuffle(linkLists);
+
+            for (String s : linkLists) {
+                TubeThumbs tubeThumbs = new TubeThumbs();
+                tubeThumbs.setVideoId(s);
+
+                thumbsArrayList.add(tubeThumbs);
+            }
+            youtubeThumbAdapter = new YoutubeThumbAdapter(getActivity(), thumbsArrayList);
+            Log.d("Network", "Connected");
+
+            return inflater.inflate(R.layout.activity_home, container, false);
+        } else {
+            Toast.makeText(getContext(), "Cannot connect to internet", Toast.LENGTH_LONG).show();
+            return inflater.inflate(R.layout.progress_bar, container, false);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        connect.getChurches(views.getContext());
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
+        Log.d("FirstActtt ", String.valueOf(db.totalContact()));
+    }
+
+    @Override
+    public void onStop() {
+//        linkLists.clear();
+        super.onStop();
+    }
 }

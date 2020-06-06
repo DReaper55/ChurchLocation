@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_id"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:orientation="horizontal">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/groceryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="Share Church Location"
+                android:textSize="24sp"
+                android:textStyle="italic" />
+
+            <EditText
+                android:id="@+id/regionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/groceryText"
+                android:layout_marginTop="15dp"
+                android:hint="Region name"
+                android:inputType="textShortMessage"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/pastorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/regionName"
+                android:layout_marginTop="15dp"
+                android:hint="Leader name"
+                android:inputType="textShortMessage"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pastorName"
+                android:layout_marginTop="15dp"
+                android:hint="Leader's number"
+                android:inputType="phone"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phoneNumber"
+                android:layout_marginTop="15dp"
+                android:hint="Church address"
+                android:inputType="textLongMessage"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/shareRegionLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/address"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorPrimary"
+                android:text="Share"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

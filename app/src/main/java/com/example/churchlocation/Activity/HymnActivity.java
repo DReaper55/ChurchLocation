@@ -23,6 +23,7 @@ import androidx.appcompat.app.WindowDecorActionBar;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,8 +52,7 @@ public class HymnActivity extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
     @Override
@@ -81,6 +81,7 @@ public class HymnActivity extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         adapter = new myAdapter(ctx, listItems);
 
@@ -95,10 +96,8 @@ public class HymnActivity extends Fragment {
 
         MenuItem searchItem = menu.findItem(R.id.searchID);
 
-        SearchView searchView = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
+        SearchView searchView;
+        searchView = (SearchView) searchItem.getActionView();
 
         // change the keyboard search button
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -299,5 +298,19 @@ public class HymnActivity extends Fragment {
         ListItem song251 = new ListItem("251", "Take The Lord With You"); listItems.add(song251);
         ListItem song255 = new ListItem("255", "To Be Like Jesus"); listItems.add(song255);
         ListItem song257 = new ListItem("257", "You Fight On"); listItems.add(song257);
+        ListItem song263 = new ListItem("263", "Lift Up Your Heads"); listItems.add(song263);
+        ListItem song264 = new ListItem("264", "Sing For Joy"); listItems.add(song264);
+        ListItem song265 = new ListItem("265", "Lord You Are Good"); listItems.add(song265);
+        ListItem song266 = new ListItem("266", "At The Foot Of The Cross"); listItems.add(song266);
+        ListItem song267 = new ListItem("267", "Mi Corazon"); listItems.add(song267);
+        ListItem song268 = new ListItem("268", "God Is Good"); listItems.add(song268);
+        ListItem song269 = new ListItem("269", "Yor Steadfast Love"); listItems.add(song269);
+        ListItem song270 = new ListItem("270", "All The Earth"); listItems.add(song270);
+        ListItem song272 = new ListItem("272", "Be It Unto Me"); listItems.add(song272);
+        ListItem song273 = new ListItem("273", "Glory be to Jesus"); listItems.add(song273);
+        ListItem song274 = new ListItem("274", "Thank you Lord"); listItems.add(song274);
+        ListItem song275 = new ListItem("275", "I Just Want To Be"); listItems.add(song275);
+        ListItem song276 = new ListItem("276", "Here We Are"); listItems.add(song276);
+        ListItem song278 = new ListItem("278", "Kyrie Eleison, Lord Have Mercy"); listItems.add(song278);
     }
 }

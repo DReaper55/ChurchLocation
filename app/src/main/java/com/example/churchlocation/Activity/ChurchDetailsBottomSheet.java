@@ -20,8 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.churchlocation.Database.DatabaseHandler;
 import com.example.churchlocation.Model.SearchChurchModel;
 import com.example.churchlocation.R;
+import com.example.churchlocation.Utils.ConnectToChurchDB;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -35,15 +37,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 public class ChurchDetailsBottomSheet extends BottomSheetDialogFragment {
-    SearchChurchModel searchChurchModel;
-    ArrayList<SearchChurchModel> churchModelArrayList = new ArrayList<>();
+    private DatabaseHandler db;
+    private ConnectToChurchDB connect = new ConnectToChurchDB();
 
+    List<SearchChurchModel> churchModelArrayList;
 
     private AppBarLayout appBarLayout;
     private ScrollView scrollView;
@@ -64,13 +68,17 @@ public class ChurchDetailsBottomSheet extends BottomSheetDialogFragment {
         final View view = View.inflate(getContext(), R.layout.fragment_church_details_bottom_sheet, null);
         sheetDialog.setContentView(view);
 
-        getChurchModel();
-
         String title = this.getArguments().getString("church_title");
         Log.d("Actionss", title);
 
+        db = connect.getChurches(getContext());
+        churchModelArrayList = db.getAllContacts();
+
         BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from((View) view.getParent());
         sheetBehavior.setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
+
+        TextView sheetTitle = view.findViewById(R.id.bottom_sheet_title);
+        sheetTitle.setText(title);
 
         appBarLayout = view.findViewById(R.id.bottom_sheet_details);
         scrollView = view.findViewById(R.id.bottom_scrollview_sheet);
@@ -92,6 +100,7 @@ public class ChurchDetailsBottomSheet extends BottomSheetDialogFragment {
                 church_leader_name.setText(churchModelArrayList.get(i).getPastorName());
                 church_members_number.setText(churchModelArrayList.get(i).getDisciples());
                 church_address.setText(churchModelArrayList.get(i).getAddress());
+//                church_details.setText(churchModelArrayList.get(i).getAbout());
 
                 String churchCountry = churchModelArrayList.get(i).getCountry() + ", "
                         + churchModelArrayList.get(i).getState();
@@ -176,83 +185,6 @@ public class ChurchDetailsBottomSheet extends BottomSheetDialogFragment {
            android.R.attr.actionBarSize
         });
         return (int) typedArray.getDimension(0,0);
-    }
-
-
-    private void getChurchModel() {
-        String json;
-
-        try {
-            InputStream jObject = getActivity().getAssets().open("some.json");
-            int size = jObject.available();
-            byte[] buffer = new byte[size];
-            jObject.read(buffer);
-            jObject.close();
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                json = new String(buffer, StandardCharsets.UTF_8);
-                JSONArray jsonArray = new JSONArray(json);
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                    searchChurchModel = new SearchChurchModel();
-
-                    searchChurchModel.setChurchLat(Double.parseDouble(jsonObject.getString("latitude")));
-                    searchChurchModel.setChurchLng(Double.parseDouble(jsonObject.getString("longitude")));
-
-                    searchChurchModel.setChurchName(jsonObject.getString("name"));
-
-                    searchChurchModel.setAbout(jsonObject.getString("about"));
-                    searchChurchModel.setState(jsonObject.getString("state"));
-                    searchChurchModel.setRegion(jsonObject.getString("region"));
-                    searchChurchModel.setPastorName(jsonObject.getString("leader"));
-                    searchChurchModel.setNumber(jsonObject.getString("number"));
-                    searchChurchModel.setAddress(jsonObject.getString("address"));
-                    searchChurchModel.setDisciples(jsonObject.getString("disciples"));
-                    searchChurchModel.setCountry(jsonObject.getString("country"));
-
-                    double latitude = searchChurchModel.getChurchLat();
-                    double longitude = searchChurchModel.getChurchLng();
-                    String churchName = searchChurchModel.getChurchName();
-                    String aboutChurch = searchChurchModel.getAbout();
-                    String churchState = searchChurchModel.getState();
-                    String churchRegion = searchChurchModel.getRegion();
-                    String churchLeader = searchChurchModel.getPastorName();
-                    String churchLeaderNumber = searchChurchModel.getNumber();
-                    String churchAddress = searchChurchModel.getAddress();
-                    String churchDisciples = searchChurchModel.getDisciples();
-                    String churchCountry = searchChurchModel.getCountry();
-
-//                    searchChurchModel.setChurchLocation(new Location(searchChurchModel.getChurchLat(), searchChurchModel.getChurchLng()));
-
-                    Location location = new Location(LocationManager.GPS_PROVIDER);
-                    location.setLatitude(searchChurchModel.getChurchLat());
-                    location.setLongitude(searchChurchModel.getChurchLng());
-//                    mMap.addMarker(new MarkerOp().position(new LatLng(searchChurchModel.getChurchLat(), searchChurchModel.getChurchLng())).title(searchChurchModel.getChurchName()));
-
-
-                    searchChurchModel.setChurchLocation(location);
-
-                    churchModelArrayList
-                            .add(new SearchChurchModel(churchName, churchRegion, churchLeader, churchAddress, churchState,
-                                    churchCountry, aboutChurch, churchLeaderNumber, churchDisciples, latitude, longitude, location));
-//                    Location location = new Location("Point A");
-//                    getDistances(getMyLocation(location), searchChurchModel);
-
-//                    Log.println(Log.INFO, "SearchChurchModel ", searchChurchModel.toString());
-
-                }
-//                SearchChurchModel location = new SearchChurchModel();
-//                location = churchModelArrayList.getClass();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 
 }

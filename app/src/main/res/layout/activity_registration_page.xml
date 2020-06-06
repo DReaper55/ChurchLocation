@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container"
+    tools:context=".Messenger.RegistrationPage">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/chat">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99000000">
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/circle" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lay_fullname"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/oval"
+                android:layout_below="@+id/profile_image"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etFullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:hint="Fullname"
+                    android:inputType="textPersonName" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lay_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Design.TextInputLayout"
+                android:background="@drawable/oval"
+                android:layout_below="@+id/lay_fullname"
+                android:layout_margin="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:hint="Email"
+                    android:imeOptions="actionNext"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lay_username"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/oval"
+                android:layout_below="@+id/lay_email"
+                android:layout_margin="10dp"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:hint="Username"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lay_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/oval"
+                style="@style/Widget.Design.TextInputLayout"
+                android:layout_below="@+id/lay_username"
+                android:layout_margin="10dp"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckedTextView
+                android:id="@+id/etConfirmLeader"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/lay_password"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="20dp"
+                android:text="Leader"
+                android:gravity="center"
+                android:background="#F3F2F2"
+                android:textSize="20sp"
+                android:paddingStart="40dp"
+                android:paddingRight="0dp"
+                android:paddingLeft="40dp" />
+
+            <CheckedTextView
+                android:id="@+id/etConfirmDisciple"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/lay_password"
+                android:layout_toRightOf="@+id/etConfirmLeader"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="0dp"
+                android:text="Discple"
+                android:gravity="center"
+                android:background="#F3F2F2"
+                android:textSize="20sp"
+                android:paddingStart="40dp" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="20dp"
+                android:layout_below="@+id/etConfirmDisciple"
+                android:background="#CCFFFFFF"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/etMaleGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/etFemaleGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18sp"
+                    android:text="Female" />
+            </RadioGroup>
+
+            <Spinner
+                android:id="@+id/leaderCountrySelection"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="#CCFFFFFF"
+                android:visibility="gone"
+                android:layout_below="@+id/radioGroup"/>
+
+            <Spinner
+                android:id="@+id/churchDenominations"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="#CCFFFFFF"
+                android:layout_below="@+id/leaderCountrySelection"/>
+
+            <Button
+                android:id="@+id/etRegisterUser"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/churchDenominations"
+                android:background="@drawable/oval_blue_button"
+                android:text="Register"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/etLoginUser"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="50dp"
+                android:layout_below="@+id/etRegisterUser"
+                android:text="Login"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"/>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>

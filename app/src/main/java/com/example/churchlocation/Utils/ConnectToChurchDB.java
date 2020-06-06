@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.churchlocation.Database.DatabaseHandler;
+import com.example.churchlocation.Database.LinksDB;
 import com.example.churchlocation.Model.SearchChurchModel;
 import com.example.churchlocation.R;
 import com.google.firebase.FirebaseApp;
@@ -17,19 +18,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class ConnectToChurchDB {
-    private List<SearchChurchModel> searchChurchesList = new ArrayList<>();
     private SearchChurchModel searchChurchModelDB = new SearchChurchModel();
 
-
     private DatabaseHandler db;
+    private LinksDB linksDB;
 
-    public void getChurches(Context context){
+    public DatabaseHandler getChurches(Context context){
         FirebaseApp.initializeApp(context);
 
         db = new DatabaseHandler(context);
@@ -45,32 +46,48 @@ public class ConnectToChurchDB {
                 boolean check = false;
 
                 List<SearchChurchModel> dTest = db.getAllContacts();
-                searchChurchesList.addAll(dTest);
-                for(int i=0; i<searchChurchesList.size();i++){
-                    if(searchChurchModelDB.getChurchName().equals(searchChurchesList.get(i).getChurchName())){
+                for(int i=0; i<dTest.size();i++){
+                    if(searchChurchModelDB.getChurchName().equals(dTest.get(i).getChurchName())){
                         check = true;
-                        searchChurchesList.clear();
+                        dTest.clear();
                     }
                 }
 
                 if(!check){
                     db.addContact(searchChurchModelDB);
-                    searchChurchesList.clear();
+                    dTest.clear();
                 }
 
 
-//                Log.d("Check ", String.valueOf(db.totalContact()));
-//                Log.d("Name ", searchChurchModelDB.toString());
+                Log.d("Check ", String.valueOf(db.totalContact()));
+                Log.d("Name ", searchChurchModelDB.toString());
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                searchChurchModelDB = dataSnapshot.getValue(SearchChurchModel.class);
 
+                List<SearchChurchModel> dTest = db.getAllContacts();
+                for(int i=0; i<dTest.size();i++){
+                    if(searchChurchModelDB.getChurchName().equals(dTest.get(i).getChurchName())){
+                        db.deleteContact(searchChurchModelDB.getChurchName());
+                        db.addContact(searchChurchModelDB);
+                        dTest.clear();
+                    }
+                }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                searchChurchModelDB = dataSnapshot.getValue(SearchChurchModel.class);
 
+                List<SearchChurchModel> dTest = db.getAllContacts();
+                for(int i=0; i<dTest.size();i++){
+                    if(searchChurchModelDB.getChurchName().equals(dTest.get(i).getChurchName())){
+                        db.deleteContact(searchChurchModelDB.getChurchName());
+                        dTest.clear();
+                    }
+                }
             }
 
             @Override
@@ -91,5 +108,81 @@ public class ConnectToChurchDB {
             Log.d("Names ", dTestIt.toString());
         }
 
+        return db;
+    }
+
+    public LinksDB getLinks(Context context){
+        FirebaseApp.initializeApp(context);
+
+        linksDB = new LinksDB(context);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference db = firebaseDatabase.getReference("links");
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                s = dataSnapshot.getValue(String.class);
+
+                boolean check = false;
+
+                List<String> dTest = linksDB.getAllContacts();
+                for(int i=0; i<dTest.size();i++){
+                    if(s.equals(dTest.get(i))){
+                        check = true;
+                        dTest.clear();
+                    }
+                }
+
+                if(!check){
+                    linksDB.addContact(s);
+                    dTest.clear();
+                }
+
+                Log.d("Linksss", s);
+                Log.d("AnotherC1", String.valueOf(linksDB.totalContact()));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                s = dataSnapshot.getValue(String.class);
+
+                List<String> dTest = linksDB.getAllContacts();
+                for(int i=0; i<dTest.size();i++){
+                    if(s.equals(dTest.get(i))){
+                        linksDB.deleteContact(s);
+                        linksDB.addContact(s);
+                        dTest.clear();
+                    }
+                }
+                Log.d("AnotherC2", String.valueOf(linksDB.totalContact()));
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                String link  = dataSnapshot.getValue(String.class);
+
+                List<String> dTest = linksDB.getAllContacts();
+                for(int i=0; i<dTest.size();i++){
+                    if(link.equals(dTest.get(i))){
+                        linksDB.deleteContact(link);
+                        dTest.clear();
+                    }
+                }
+                Log.d("AnotherC3", String.valueOf(linksDB.totalContact()));
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Log.d("Linkss", String.valueOf(linksDB.totalContact()));
+
+        return linksDB;
     }
 }

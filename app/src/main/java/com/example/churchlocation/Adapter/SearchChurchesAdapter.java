@@ -31,6 +31,8 @@ public class SearchChurchesAdapter extends RecyclerView.Adapter<SearchChurchesAd
     private List<SearchChurchModel> searchChurchModels;
     private List<SearchChurchModel> searchChurchModelListFilter;
 
+    private String country;
+
 
     public SearchChurchesAdapter(Context context, List<SearchChurchModel> searchChurchModels) {
         this.context = context;
@@ -51,7 +53,7 @@ public class SearchChurchesAdapter extends RecyclerView.Adapter<SearchChurchesAd
     public void onBindViewHolder(@NonNull final ViewModel holder, final int position) {
         holder.mSearchedLocationTextView.setText(searchChurchModels.get(position).getChurchName());
 
-        String country = searchChurchModels.get(position).getCountry();
+        country = searchChurchModels.get(position).getCountry();
         if(country.equals("Nigeria")){
             holder.searchesId.setBackgroundResource(R.drawable.song_book);
         }
@@ -67,9 +69,6 @@ public class SearchChurchesAdapter extends RecyclerView.Adapter<SearchChurchesAd
 
             }
         });
-
-        Log.d("Fragment", searchChurchModels.get(position).getChurchLocation().toString());
-
     }
 
     @Override
@@ -79,8 +78,40 @@ public class SearchChurchesAdapter extends RecyclerView.Adapter<SearchChurchesAd
 
     @Override
     public Filter getFilter() {
-        return null;
+        return listFilter;
     }
+
+    private Filter listFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<SearchChurchModel> filterList = new ArrayList<>();
+
+            if(constraint == null || constraint.length() == 0){
+                filterList.addAll(searchChurchModelListFilter);
+            } else{
+                String lowerFilter = constraint.toString().toLowerCase().trim();
+
+                for(SearchChurchModel item : searchChurchModelListFilter){
+                    if(item.getChurchName().toLowerCase().contains(lowerFilter)
+                            || item.getCountry().toLowerCase().contains(lowerFilter)
+                            || item.getState().toLowerCase().contains(lowerFilter)){
+                        filterList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filterList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            searchChurchModels.clear();
+            searchChurchModels.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class ViewModel extends RecyclerView.ViewHolder {
         CardView cardView;

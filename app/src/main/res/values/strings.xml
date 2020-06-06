@@ -22,9 +22,6 @@
     <string name="decide_leave"> Are you sure? </string>
     <string name="search"> Search </string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string-array name="video_id_array">
         <item>YAG1MOtUVb4</item>
         <item>VVwtPeW6JWc</item>

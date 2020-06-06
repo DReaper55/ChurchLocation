@@ -37,10 +37,11 @@
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/colorPrimary"/>
 
-                <SearchView
+                <androidx.appcompat.widget.SearchView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:tooltipText="Search"
+                    android:id="@+id/search_churches"
+                    android:tooltipText="Search name, state, country"
                     android:clickable="true"/>
 
             </androidx.appcompat.widget.Toolbar>

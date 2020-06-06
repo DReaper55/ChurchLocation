@@ -1,6 +1,7 @@
 package com.example.churchlocation.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -68,7 +69,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.add_church_card:
-                Toast.makeText(view.getContext(), "Church Location", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), AddAChurch.class));
                 break;
 
             case R.id.share_app_card:

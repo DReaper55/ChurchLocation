@@ -24,7 +24,7 @@
     <style name="Theme.Design.NoActionBar" parent="HoloThemes">
     </style>
 
-    <style name="AppTheme.NoActionBar." parent="Theme.Design.NoActionBar">
+    <style name="AppTheme.NoActionBar." parent="AppThemeHymn">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar"> false</item>
     </style>

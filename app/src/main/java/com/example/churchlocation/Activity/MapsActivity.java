@@ -1,5 +1,6 @@
 package com.example.churchlocation.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -28,20 +29,28 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.churchlocation.Database.DatabaseHandler;
 import com.example.churchlocation.Model.ChurchDistance;
 import com.example.churchlocation.Model.ChurchLocation;
+import com.example.churchlocation.Model.SearchChurchModel;
+import com.example.churchlocation.Utils.ConnectToChurchDB;
 import com.example.churchlocation.Utils.LatLngInterpolator;
 import com.example.churchlocation.Model.MarkerAnimation;
 import com.example.churchlocation.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -61,23 +70,38 @@ import static android.content.Context.LOCATION_SERVICE;
 public class MapsActivity extends Fragment {
 
     private GoogleMap mMap;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
 
-    private ArrayList<ChurchLocation> churchLocationList = new ArrayList<>();
+//    update churchLocationList from db
     private ArrayList<Double> distanceList = new ArrayList<>();
     private ArrayList<ChurchDistance> ChurchDistanceList = new ArrayList<>();
+
+    private CameraPosition mCameraPosition;
+
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private boolean mLocationPermissionGranted;
+    private Location mLastKnownLocation;
+
+    private static final String KEY_CAMERA_POSITION = "camera_position";
+    private static final String KEY_LOCATION = "location";
+
+    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private static final int DEFAULT_ZOOM = 15;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
+    private DatabaseHandler db;
+    private ConnectToChurchDB connect = new ConnectToChurchDB();
+    private List<SearchChurchModel> listOfChurches;
 
     private View view;
     private Context ctx;
 
-    static int counter;
+    private static int counter;
 
-    SupportMapFragment mapFragment;
+    private SupportMapFragment mapFragment;
 
     ChurchLocation churchLocation = new ChurchLocation();
 
-    AlertDialog.Builder alertBuilder;
+    private AlertDialog.Builder alertBuilder;
 
     
     public MapsActivity() {
@@ -108,12 +132,21 @@ public class MapsActivity extends Fragment {
        ctx = root.getContext();
         view = root.getRootView();
 
+//        Where first bit of code begins
+        if(savedInstanceState != null){
+            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+        }
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(root.getContext());
+
+//      Where it ends
+
         mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                mMap.clear();
 
                 view = getView();
 
@@ -121,121 +154,101 @@ public class MapsActivity extends Fragment {
                 nearestChurch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String name = "";
-                        getShortestDistance(name);
+                        getShortestDistance();
                     }
                 });
 
-//                TODO: Update module
-                locationManager = (LocationManager) ctx.getSystemService(LOCATION_SERVICE);
-                locationListener = new LocationListener() {
 
-                    @Override
-                    public void onLocationChanged(final Location location) {
-                        mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))
-                                .icon(bitmapDescriptor(view.getContext(), R.drawable.map_current_local)));
+                getLocationPermission();
 
-                        Marker mCurrLocationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))
-                            .icon(bitmapDescriptor(view.getContext(), R.drawable.map_current_local)));
+                updateLocationUI();
 
-                                /*mMap.addCircle(circleOptions.center(new LatLng(location.getLatitude(), location.getLongitude()))
-                                .radius(3000)
-                                .fillColor(Color.BLUE)
-                                .strokeWidth(3.6f));
-*/
-                                if(mCurrLocationMarker != null){
-                                    mCurrLocationMarker.remove();
+                getDeviceLocation();
 
-                                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                    MarkerAnimation.animateMarkerToGB(mCurrLocationMarker, latLng, new LatLngInterpolator.Spherical());
-
-//                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-                                }
-
-
-// TODO: Change the location variable to the lastKnownLocation
-                        for(ChurchLocation churchIterator : churchLocationList){
-                            Location startPoint = new Location(LocationManager.GPS_PROVIDER);
-                            startPoint.setLatitude(location.getLatitude());
-                            startPoint.setLongitude(location.getLongitude());
-
-                            Location endPoint = new Location(LocationManager.GPS_PROVIDER);
-                            endPoint.setLatitude(churchIterator.getChurchLat());
-                            endPoint.setLongitude(churchIterator.getChurchLng());
-
-                            double result = startPoint.distanceTo(endPoint);
-                            Log.println(Log.INFO, "Distances ", String.valueOf(result));
-
-                            ChurchDistanceList.add(new ChurchDistance(result, churchIterator.getChurchName(), churchIterator.getChurchLat(), churchIterator.getChurchLng()));
-
-//                    Log.println(Log.INFO, "Showw2", ChurchDistanceList.toString());
-
-                            distanceList.add(result);
-
-//                    Log.println(Log.INFO, "Distances2 ", String.valueOf(churchIterator.getChurchLocation()));
-
-                    /*Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
-                        if (addresses != null && addresses.size() > 0) {
-                            Log.println(Log.INFO, "Address ", addresses.get(0).toString());
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-
-                            FloatingActionButton myLocation = view.findViewById(R.id.findMyLocation);
-                            myLocation.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 7));
-                                }
-                            });
-
-                        }
-
-                    }
-
-
-                    @Override
-                    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String s) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String s) {
-
-                    }
-                };
-
-
-                if(Build.VERSION.SDK_INT < 23){
-                    return;
-                } else {
-                    if(ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-
-                        ActivityCompat.requestPermissions(MapsActivity.this.getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-                    } else{
-
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                    }
-
-                }
-
-
+                db = connect.getChurches(view.getContext());
+                listOfChurches = db.getAllContacts();
             }
         });
 
        return root;
+    }
+
+    private void getDeviceLocation(){
+//        final Marker mCurrLocationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))
+//                .icon(bitmapDescriptor(view.getContext(), R.drawable.map_current_local)));
+
+        try{
+            if(mLocationPermissionGranted){
+                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if(task.isSuccessful()){
+                            mLastKnownLocation = task.getResult();
+                            if(mLastKnownLocation != null){
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), 12));
+
+//                                LatLng latLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+//                                MarkerAnimation.animateMarkerToGB(mCurrLocationMarker, latLng, new LatLngInterpolator.Spherical());
+
+                                for(SearchChurchModel churchIterator : listOfChurches){
+                                    Location startPoint = new Location(LocationManager.GPS_PROVIDER);
+                                    startPoint.setLatitude(mLastKnownLocation.getLatitude());
+                                    startPoint.setLongitude(mLastKnownLocation.getLongitude());
+
+                                    Location endPoint = new Location(LocationManager.GPS_PROVIDER);
+                                    endPoint.setLatitude(churchIterator.getChurchLat());
+                                    endPoint.setLongitude(churchIterator.getChurchLng());
+
+                                    double result = startPoint.distanceTo(endPoint);
+                                    Log.println(Log.INFO, "Distances ", String.valueOf(result));
+
+                                    ChurchDistanceList.add(new ChurchDistance(result, churchIterator.getChurchName(), churchIterator.getChurchLat(), churchIterator.getChurchLng()));
+
+                                    distanceList.add(result);
+
+
+                                    FloatingActionButton myLocation = view.findViewById(R.id.findMyLocation);
+                                    myLocation.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), 7));
+                                        }
+                                    });
+
+                                }
+                            }
+                        } else {
+                            Log.d("MapsActivity", "Current location is null. Using defaults.");
+                            Log.e("MapsActivity", "Exception: %s", task.getException());
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, 12));
+                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                        }
+                    }
+                });
+            }
+        }catch(SecurityException e){
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
+    private void updateLocationUI() {
+        if(mMap == null){
+            return;
+        }
+        try{
+            if(mLocationPermissionGranted){
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                mLastKnownLocation = null;
+                getLocationPermission();
+            }
+        } catch(SecurityException e){
+            Log.e("Exception: %s", e.getMessage());
+        }
     }
 
     private BitmapDescriptor bitmapDescriptor(Context context, int vectorResID){
@@ -251,11 +264,6 @@ public class MapsActivity extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        getJsonObject();
-
-        getChurchLocations();
 
         buttonFunctions();
 
@@ -312,8 +320,7 @@ public class MapsActivity extends Fragment {
         alertBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String name = "";
-                getShortestDistance(name);
+                getShortestDistance();
             }
         });
 
@@ -329,7 +336,8 @@ public class MapsActivity extends Fragment {
     }
 
 
-    private String getShortestDistance(String name){
+    private void getShortestDistance(){
+        String name = "";
         for(ChurchDistance churchDistanceIterator : ChurchDistanceList){
             if(churchDistanceIterator.getDistance() == findShortestDistance(distanceList)){
                 name = churchDistanceIterator.getName();
@@ -346,7 +354,6 @@ public class MapsActivity extends Fragment {
 //                Log.println(Log.INFO, "Showw ", String.valueOf(churchDistanceIterator.getDistance()));
             }
         }
-        return name;
     }
 
     private double findShortestDistance(ArrayList arrayList) {
@@ -364,7 +371,7 @@ public class MapsActivity extends Fragment {
         return distance;
     }
 
-    public static <T extends Comparable<T>> int findMinIndex(final List<T> xs) {
+    private static <T extends Comparable<T>> int findMinIndex(final List<T> xs) {
         int minIndex;
         if (xs.isEmpty()) {
             minIndex = -1;
@@ -383,107 +390,32 @@ public class MapsActivity extends Fragment {
         return minIndex;
     }
 
-
-//    TODO: Update module
-        @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-            }
-
+    private void getLocationPermission(){
+        if(ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 
-    public void getJsonObject(){
-        String json;
-
-        try {
-            InputStream jObject = ctx.getAssets().open("some.json");
-            int size = jObject.available();
-            byte[] buffer = new byte[size];
-            jObject.read(buffer);
-            jObject.close();
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                json = new String(buffer, StandardCharsets.UTF_8);
-                JSONArray jsonArray = new JSONArray(json);
-
-                for(int i = 0; i < jsonArray.length(); i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-//                    churchLocationList.add(name.getString("name"));
-//                    Log.println(Log.INFO, "Names ", name.getString("name"));
-                }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+        updateLocationUI();
     }
 
-
-    private ChurchLocation getChurchLocations(){
-        String json;
-
-        try {
-            InputStream jObject = ctx.getAssets().open("some.json");
-            int size = jObject.available();
-            byte[] buffer = new byte[size];
-            jObject.read(buffer);
-            jObject.close();
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                json = new String(buffer, StandardCharsets.UTF_8);
-                JSONArray jsonArray = new JSONArray(json);
-
-                for(int i = 0; i < jsonArray.length(); i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                    churchLocation = new ChurchLocation();
-
-                    churchLocation.setChurchLat(Double.parseDouble(jsonObject.getString("latitude")));
-                    churchLocation.setChurchLng(Double.parseDouble(jsonObject.getString("longitude")));
-
-                    churchLocation.setChurchName(jsonObject.getString("name"));
-
-                    double latitude = churchLocation.getChurchLat();
-                    double longitude = churchLocation.getChurchLng();
-                    String churchName = churchLocation.getChurchName();
-
-//                    churchLocation.setChurchLocation(new Location(churchLocation.getChurchLat(), churchLocation.getChurchLng()));
-
-                    Location location = new Location(LocationManager.GPS_PROVIDER);
-                    location.setLatitude(churchLocation.getChurchLat());
-                    location.setLongitude(churchLocation.getChurchLng());
-//                    mMap.addMarker(new MarkerOp().position(new LatLng(churchLocation.getChurchLat(), churchLocation.getChurchLng())).title(churchLocation.getChurchName()));
-
-
-                    churchLocation.setChurchLocation(location);
-
-                    churchLocationList.add(new ChurchLocation(churchName, latitude, longitude, location));
-//                    Location location = new Location("Point A");
-//                    getDistances(getMyLocation(location), churchLocation);
-                    Log.println(Log.INFO, "ChurchLocation ", String.valueOf(churchLocation.getChurchLocation()));
-                }
-//                ChurchLocation location = new ChurchLocation();
-//                location = churchLocationList.getClass();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        if(mMap != null){
+            outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
         }
-
-        return churchLocation;
+        super.onSaveInstanceState(outState);
     }
 
 }

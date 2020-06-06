@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.churchlocation.R;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
@@ -15,7 +16,7 @@ public class Hymn extends AppCompatActivity implements View.OnClickListener {
     private TextView hymnSong;
     private AddFloatingActionButton zoomIn;
     private AddFloatingActionButton zoomOut;
-    private int textSize = 20;
+    private int textSize = 0;
     private int text_diff = 3;
     private SharedPreferences sharedPrefs;
     private SharedPreferences.Editor editor;
@@ -27,12 +28,32 @@ public class Hymn extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hymn);
 
-//        TextView hymnNumber = findViewById(R.id.hymnNumberID);
-//         TextView hymnTitle = findViewById(R.id.hymnTitleID);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        sharedPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+        TextView hymnTitle = findViewById(R.id.hymnTitle);
+
+        findViewById(R.id.previousActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         hymnSong = findViewById(R.id.songID);
 
         zoomIn = findViewById(R.id.zoomInID);
         zoomOut = findViewById(R.id.zoomOutID);
+
+        if(sharedPrefs != null){
+            textSize = sharedPrefs.getInt("TEXT_SIZE", 20);
+
+            if(textSize != 0){
+                hymnSong.setTextSize(textSize);
+            }
+        }
 
         zoomIn.setOnClickListener(this);
         zoomOut.setOnClickListener(this);
@@ -42,8 +63,7 @@ public class Hymn extends AppCompatActivity implements View.OnClickListener {
         if (bundle != null) {
             getSupportActionBar().setTitle(bundle.getString("number") + ". " + bundle.getString("title"));
 
-//            hymnNumber.setText(bundle.getString("number"));
-//            hymnTitle.setText(bundle.getString("title"));
+            hymnTitle.setText(bundle.getString("title"));
 
             String number = bundle.getString("number");
 
@@ -56,7 +76,7 @@ public class Hymn extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            // change text size
+//             change text size
             case R.id.zoomInID:
                 setZoomIn();
 
@@ -72,10 +92,9 @@ public class Hymn extends AppCompatActivity implements View.OnClickListener {
         textSize = textSize + text_diff;
         hymnSong.setTextSize(textSize);
 
-        sharedPrefs = getSharedPreferences(PREFS_NAME, 0);
         editor = sharedPrefs.edit();
 
-        editor.putInt("textSize", textSize);
+        editor.putInt("TEXT_SIZE", textSize);
         editor.apply();
     }
 
@@ -83,9 +102,18 @@ public class Hymn extends AppCompatActivity implements View.OnClickListener {
         textSize = textSize - text_diff;
         hymnSong.setTextSize(textSize);
 
-        sharedPrefs = getSharedPreferences(PREFS_NAME, 0);
         editor = sharedPrefs.edit();
-        editor.putInt("textSize", textSize);
+        editor.putInt("TEXT_SIZE", textSize);
+        editor.apply();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        editor = sharedPrefs.edit();
+
+        editor.putInt("TEXT_SIZE", textSize);
         editor.apply();
     }
 
@@ -428,13 +456,55 @@ public class Hymn extends AppCompatActivity implements View.OnClickListener {
             case "257":
                 hymnSong.setText(R.string.you_fight_on_257);
                 break;
+            case "263":
+                hymnSong.setText(R.string.lift_up_ur_heads_263);
+                break;
+            case "264":
+                hymnSong.setText(R.string.sing_for_joy_264);
+                break;
+            case "265":
+                hymnSong.setText(R.string.lord_u_r_good_265);
+                break;
+            case "266":
+                hymnSong.setText(R.string.at_d_foot_of_d_cross_266);
+                break;
+            case "267":
+                hymnSong.setText(R.string.mi_corazon_267);
+                break;
+            case "268":
+                hymnSong.setText(R.string.god_is_good_268);
+                break;
+            case "269":
+                hymnSong.setText(R.string.your_steadfast_love_269);
+                break;
+            case "270":
+                hymnSong.setText(R.string.all_the_earth_270);
+                break;
+            case "272":
+                hymnSong.setText(R.string.be_it_unto_me_272);
+                break;
+            case "273":
+                hymnSong.setText(R.string.glory_be_to_jesus_273);
+                break;
+            case "274":
+                hymnSong.setText(R.string.thank_u_lord_274);
+                break;
+            case "275":
+                hymnSong.setText(R.string.i_just_want_2_b_where_u_r_275);
+                break;
+            case "276":
+                hymnSong.setText(R.string.here_we_r_276);
+                break;
+            case "278":
+                hymnSong.setText(R.string.Kyrie_Eleison_Lord_have_mercy_278);
+                break;
         }
 
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);
-        if (preferences.contains("textSize")) {
-            int message = preferences.getInt("textSize", 20);
-
-            hymnSong.setTextSize(message);
-        }
+//        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);
+//        if (preferences.contains("textSize")) {
+//            int message = preferences.getInt("textSize", 20);
+//
+//            hymnSong.setTextSize(message);
+//        }
     }
 }

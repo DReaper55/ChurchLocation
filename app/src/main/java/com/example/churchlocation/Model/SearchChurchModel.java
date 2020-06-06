@@ -10,6 +10,11 @@ public class SearchChurchModel {
     public SearchChurchModel() {
     }
 
+    public SearchChurchModel(String churchName, String country) {
+        this.churchName = churchName;
+        this.country = country;
+    }
+
     public SearchChurchModel(String churchName, String region, String pastorName, String address, String state, String country, String about, String number, String disciples, double churchLat, double churchLng, Location churchLocation) {
         this.churchName = churchName;
         this.pastorName = pastorName;
@@ -25,7 +30,7 @@ public class SearchChurchModel {
         this.region = region;
     }
 
-    public SearchChurchModel(String churchName, String pastorName, String address, String state, String country, String about, String number, String disciples, String region, double churchLat, double churchLng) {
+    public SearchChurchModel(String churchName, String pastorName, String address, String state, String country, String about, String number, String region, double churchLat, double churchLng) {
         this.churchName = churchName;
         this.pastorName = pastorName;
         this.address = address;
@@ -33,7 +38,6 @@ public class SearchChurchModel {
         this.country = country;
         this.about = about;
         this.number = number;
-        this.disciples = disciples;
         this.region = region;
         this.churchLat = churchLat;
         this.churchLng = churchLng;
