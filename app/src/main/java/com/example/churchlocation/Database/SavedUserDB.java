@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.churchlocation.Model.UserObject;
 import com.example.churchlocation.Utils.UserDBUtil;
 
+import java.util.ArrayList;
+
 import androidx.annotation.Nullable;
 
 public class SavedUserDB extends SQLiteOpenHelper {
@@ -24,6 +26,8 @@ public class SavedUserDB extends SQLiteOpenHelper {
         String CREATE_TABLE = "CREATE TABLE " + UserDBUtil.TABLE_NAME + "("
                 + UserDBUtil.KEY_ID + " INTEGER PRIMARY KEY,"
                 + UserDBUtil.KEY_EMAIL + " TEXT,"
+                + UserDBUtil.KEY_CHURCH + " TEXT,"
+                + UserDBUtil.KEY_COUNTRY + " TEXT,"
                 + UserDBUtil.KEY_UID + " TEXT);";
 
         db.execSQL(CREATE_TABLE);
@@ -41,9 +45,38 @@ public class SavedUserDB extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(UserDBUtil.KEY_EMAIL, userObject.getEmail());
         values.put(UserDBUtil.KEY_UID, userObject.getId());
+        values.put(UserDBUtil.KEY_CHURCH, userObject.getChurch());
+        values.put(UserDBUtil.KEY_COUNTRY, userObject.getLeaderCountry());
 
         db.insert(UserDBUtil.TABLE_NAME, null, values);
     }
+
+    public UserObject getUser(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        UserObject userObjectDB = new UserObject();
+
+        ArrayList<UserObject> dummyTestList = new ArrayList<>();
+
+        Cursor cursor = db.query(UserDBUtil.TABLE_NAME,
+                new String[]{UserDBUtil.KEY_ID, UserDBUtil.KEY_EMAIL, UserDBUtil.KEY_CHURCH, UserDBUtil.KEY_COUNTRY,
+                        UserDBUtil.KEY_UID,},
+                null, null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                userObjectDB.setEmail(cursor.getString(cursor.getColumnIndex(UserDBUtil.KEY_EMAIL)));
+                userObjectDB.setChurch(cursor.getString(cursor.getColumnIndex(UserDBUtil.KEY_CHURCH)));
+                userObjectDB.setLeaderCountry(cursor.getString(cursor.getColumnIndex(UserDBUtil.KEY_COUNTRY)));
+                userObjectDB.setId(cursor.getString(cursor.getColumnIndex(UserDBUtil.KEY_UID)));
+
+//                dummyTestList.add(userObjectDB);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        return userObjectDB;
+    }
+
 
     public void deleteUsers(){
         SQLiteDatabase db = this.getWritableDatabase();

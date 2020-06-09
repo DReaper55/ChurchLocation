@@ -7,9 +7,11 @@ public class UserObject {
     public UserObject() {
     }
 
-    public UserObject(String email, String id) {
+    public UserObject(String email, String id, String church, String leaderCountry) {
         this.email = email;
         this.id = id;
+        this.church = church;
+        this.leaderCountry = leaderCountry;
     }
 
     public UserObject(String fullname, String email, String password, String title, String gender, String church, String displayPic, boolean emailVerification, boolean titleVerification, String id) {

@@ -57,13 +57,14 @@ public class LoginPage extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
     }
 
     @Nullable
@@ -97,16 +98,16 @@ public class LoginPage extends Fragment implements View.OnClickListener {
         if (getArguments() != null) {
             uid = getArguments().getString("UID");
         }
-        if(uid != null){
+        if (uid != null) {
             checkVerificationStatus(uid);
 
-            Log.d("TAG", "From registration account "+uid);
+            Log.d("TAG", "From registration account " + uid);
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.etForgotPassword:
                 break;
             case R.id.etRegisterAcc:
@@ -118,7 +119,7 @@ public class LoginPage extends Fragment implements View.OnClickListener {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
 
-                if(!email.isEmpty() && !password.isEmpty()){
+                if (!email.isEmpty() && !password.isEmpty()) {
                     /*firebaseAuth.fetchSignInMethodsForEmail(email)
                             .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                                 @Override
@@ -143,15 +144,61 @@ public class LoginPage extends Fragment implements View.OnClickListener {
 
                                     String uid = authResult.getUser().getUid();
 
-                                    if(authResult.getUser() != null){
-                                        if(authResult.getUser().isEmailVerified()){
-                                            DatabaseReference db = firebaseDatabase.getReference("users/"+uid+"/emailVerification");
+                                    if (authResult.getUser() != null) {
+                                        if (authResult.getUser().isEmailVerified()) {
+                                            DatabaseReference db = firebaseDatabase.getReference("users/" + uid + "/emailVerification");
                                             db.setValue(true);
 
+//                                            Set Id and Email of sqliteDb
                                             userObject.setId(uid);
                                             userObject.setEmail(authResult.getUser().getEmail());
 
+//                                            Get The Church
+
+                                            DatabaseReference churchDb = firebaseDatabase.getReference("users/" + uid + "/church");
+                                            churchDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    userObject.setChurch(dataSnapshot.getValue().toString());
+
+                                                    savedUserDB.addUser(userObject);
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+//                                            Get the leader's country
+
+                                            DatabaseReference countryDb = firebaseDatabase.getReference("users/" + uid + "/leaderCountry");
+                                            countryDb.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    if (dataSnapshot.exists()) {
+                                                        userObject.setLeaderCountry(dataSnapshot.getValue().toString());
+
+                                                        savedUserDB.addUser(userObject);
+
+                                                    } else {
+                                                        userObject.setLeaderCountry("");
+
+                                                        savedUserDB.addUser(userObject);
+
+                                                        Log.d("LoginTAG", userObject.getLeaderCountry());
+
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+
                                             savedUserDB.addUser(userObject);
+
 
                                             Log.d("TAG", String.valueOf(savedUserDB.totalUsers()));
 
@@ -183,7 +230,7 @@ public class LoginPage extends Fragment implements View.OnClickListener {
     }
 
     private void checkVerificationStatus(String uid) {
-        DatabaseReference db = firebaseDatabase.getReference("users/"+uid+"/emailVerification");
+        DatabaseReference db = firebaseDatabase.getReference("users/" + uid + "/emailVerification");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -192,7 +239,7 @@ public class LoginPage extends Fragment implements View.OnClickListener {
                 Log.d("TAG", String.valueOf(value));
 
 //                The user is not verified
-                if(!value){
+                if (!value) {
                     Log.d("TAG", "User not verified");
 
                     sendVerificationEmail();
@@ -207,12 +254,12 @@ public class LoginPage extends Fragment implements View.OnClickListener {
     }
 
     private void sendVerificationEmail() {
-        if(firebaseUser != null){
+        if (firebaseUser != null) {
             firebaseUser.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Log.d("TAG", "Email sent");
                                 Toast.makeText(view.getContext(), "Check email", Toast.LENGTH_LONG).show();
                             } else {

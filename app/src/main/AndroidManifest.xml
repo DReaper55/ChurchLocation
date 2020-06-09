@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Messenger.RecentChatsPage"></activity>
+        <activity android:name=".Activity.NotificationsPage"></activity>
+        <activity android:name=".Messenger.RecentChatsPage" />
         <activity android:name=".Messenger.LoginPage" />
         <activity android:name=".Messenger.RegistrationPage" />
 
