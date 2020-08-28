@@ -1,20 +1,40 @@
 package com.example.churchlocation.Model;
 
-public class UserObject {
-    private String fullname, email, password, title, gender, church, displayPic, id, leaderCountry;
-    private boolean emailVerification, titleVerification;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class UserObject implements Parcelable {
+    private String fullname, email, password, title, gender, church, displayPic,
+            id, leaderCountry, username, state, dateOfBirth, dateOfBaptism, bio, hobby,
+            titleVerification;
+    private boolean emailVerification;
+
+    private String status;
 
     public UserObject() {
     }
 
-    public UserObject(String email, String id, String church, String leaderCountry) {
+
+    public UserObject(String fullname, String email, String church, String id, String status, String username) {
+        this.fullname = fullname;
         this.email = email;
-        this.id = id;
         this.church = church;
-        this.leaderCountry = leaderCountry;
+        this.id = id;
+        this.status = status;
+        this.username = username;
     }
 
-    public UserObject(String fullname, String email, String password, String title, String gender, String church, String displayPic, boolean emailVerification, boolean titleVerification, String id) {
+    public UserObject(String fullname, String email, String church, String id, String leaderCountry, String status, String username) {
+        this.fullname = fullname;
+        this.email = email;
+        this.church = church;
+        this.id = id;
+        this.leaderCountry = leaderCountry;
+        this.status = status;
+        this.username = username;
+    }
+
+    public UserObject(String fullname, String email, String password, String title, String gender, String church, String displayPic, String id, String leaderCountry, String username, String state, String dateOfBirth, String dateOfBaptism, String bio, String hobby, String titleVerification) {
         this.fullname = fullname;
         this.email = email;
         this.password = password;
@@ -22,12 +42,18 @@ public class UserObject {
         this.gender = gender;
         this.church = church;
         this.displayPic = displayPic;
-        this.emailVerification = emailVerification;
-        this.titleVerification = titleVerification;
         this.id = id;
+        this.leaderCountry = leaderCountry;
+        this.username = username;
+        this.state = state;
+        this.dateOfBirth = dateOfBirth;
+        this.dateOfBaptism = dateOfBaptism;
+        this.bio = bio;
+        this.hobby = hobby;
+        this.titleVerification = titleVerification;
     }
 
-    public UserObject(String fullname, String email, String password, String title, String gender, String church, String displayPic, String id, String leaderCountry, boolean emailVerification, boolean titleVerification) {
+    public UserObject(String fullname, String email, String password, String title, String gender, String church, String displayPic, String id, String leaderCountry, String username, String state, String dateOfBirth, String dateOfBaptism, boolean emailVerification, String titleVerification, String status) {
         this.fullname = fullname;
         this.email = email;
         this.password = password;
@@ -37,8 +63,13 @@ public class UserObject {
         this.displayPic = displayPic;
         this.id = id;
         this.leaderCountry = leaderCountry;
+        this.username = username;
+        this.state = state;
+        this.dateOfBirth = dateOfBirth;
+        this.dateOfBaptism = dateOfBaptism;
         this.emailVerification = emailVerification;
         this.titleVerification = titleVerification;
+        this.status = status;
     }
 
     public String getFullname() {
@@ -51,6 +82,14 @@ public class UserObject {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setEmail(String email) {
@@ -105,11 +144,11 @@ public class UserObject {
         this.emailVerification = emailVerification;
     }
 
-    public boolean isTitleVerification() {
+    public String isTitleVerification() {
         return titleVerification;
     }
 
-    public void setTitleVerification(boolean titleVerification) {
+    public void setTitleVerification(String titleVerification) {
         this.titleVerification = titleVerification;
     }
 
@@ -121,6 +160,8 @@ public class UserObject {
         this.id = id;
     }
 
+
+
     public String getLeaderCountry() {
         return leaderCountry;
     }
@@ -128,4 +169,111 @@ public class UserObject {
     public void setLeaderCountry(String leaderCountry) {
         this.leaderCountry = leaderCountry;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getDateOfBaptism() {
+        return dateOfBaptism;
+    }
+
+    public void setDateOfBaptism(String dateOfBaptism) {
+        this.dateOfBaptism = dateOfBaptism;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getHobby() {
+        return hobby;
+    }
+
+    public void setHobby(String hobby) {
+        this.hobby = hobby;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(fullname);
+        parcel.writeString(email);
+        parcel.writeString(password);
+        parcel.writeString(title);
+        parcel.writeString(gender);
+        parcel.writeString(church);
+        parcel.writeString(displayPic);
+        parcel.writeString(id);
+        parcel.writeString(leaderCountry);
+        parcel.writeString(username);
+        parcel.writeString(state);
+        parcel.writeString(dateOfBirth);
+        parcel.writeString(dateOfBaptism);
+        parcel.writeString(bio);
+        parcel.writeString(hobby);
+        parcel.writeString(titleVerification);
+    }
+
+    protected UserObject(Parcel in) {
+        fullname = in.readString();
+        email = in.readString();
+        password = in.readString();
+        title = in.readString();
+        gender = in.readString();
+        church = in.readString();
+        displayPic = in.readString();
+        id = in.readString();
+        leaderCountry = in.readString();
+        username = in.readString();
+        state = in.readString();
+        dateOfBirth = in.readString();
+        dateOfBaptism = in.readString();
+        titleVerification = in.readString();
+        bio = in.readString();
+        hobby = in.readString();
+        emailVerification = in.readByte() != 0;
+        status = in.readString();
+    }
+
+    public static final Creator<UserObject> CREATOR = new Creator<UserObject>() {
+        @Override
+        public UserObject createFromParcel(Parcel in) {
+            return new UserObject(in);
+        }
+
+        @Override
+        public UserObject[] newArray(int size) {
+            return new UserObject[size];
+        }
+    };
+
 }

@@ -3,8 +3,6 @@ package com.example.churchlocation.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,27 +14,22 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Filterable;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.WindowDecorActionBar;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.churchlocation.Adapter.myAdapter;
+import com.example.churchlocation.Adapter.ChurchHymnAdapter;
 import com.example.churchlocation.Model.ListItem;
 import com.example.churchlocation.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class HymnActivity extends Fragment {
+public class HymnFragment extends Fragment {
     private List<ListItem> listItems;
     private  AlertDialog.Builder alertBuilder;
     private RecyclerView.Adapter adapter;
@@ -45,7 +38,7 @@ public class HymnActivity extends Fragment {
     private Context ctx;
     private View view;
 
-    public HymnActivity() {
+    public HymnFragment() {
     }
 
     @Override
@@ -83,7 +76,7 @@ public class HymnActivity extends Fragment {
 
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-        adapter = new myAdapter(ctx, listItems);
+        adapter = new ChurchHymnAdapter(ctx, listItems);
 
         recyclerView.setAdapter(adapter);
     }
@@ -92,7 +85,7 @@ public class HymnActivity extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        inflater.inflate(R.menu.menubar_layout, menu);
+        inflater.inflate(R.menu.hymn_fragment_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.searchID);
 
@@ -161,13 +154,13 @@ public class HymnActivity extends Fragment {
         if(getSupportFragmentManager().getBackStackEntryCount() > 0){
             this.onBackPressed();
         } else{
-            alertBuilder = new AlertDialog.Builder(HymnActivity.this);
+            alertBuilder = new AlertDialog.Builder(HymnFragment.this);
             alertBuilder.setTitle(R.string.exit);
             alertBuilder.setMessage(R.string.decide_leave);
             alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    HymnActivity.this.finish();
+                    HymnFragment.this.finish();
                 }
             });
 

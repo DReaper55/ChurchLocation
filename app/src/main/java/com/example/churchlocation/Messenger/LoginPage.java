@@ -149,45 +149,14 @@ public class LoginPage extends Fragment implements View.OnClickListener {
                                             DatabaseReference db = firebaseDatabase.getReference("users/" + uid + "/emailVerification");
                                             db.setValue(true);
 
-//                                            Set Id and Email of sqliteDb
-                                            userObject.setId(uid);
-                                            userObject.setEmail(authResult.getUser().getEmail());
-
-//                                            Get The Church
-
-                                            DatabaseReference churchDb = firebaseDatabase.getReference("users/" + uid + "/church");
-                                            churchDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            // save user's data to sqlite
+                                            firebaseDatabase.getReference("users/" + uid).addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                    userObject.setChurch(dataSnapshot.getValue().toString());
-
-                                                    savedUserDB.addUser(userObject);
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                }
-                                            });
-
-//                                            Get the leader's country
-
-                                            DatabaseReference countryDb = firebaseDatabase.getReference("users/" + uid + "/leaderCountry");
-                                            countryDb.addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                    if (dataSnapshot.exists()) {
-                                                        userObject.setLeaderCountry(dataSnapshot.getValue().toString());
-
+                                                    if(dataSnapshot.exists()){
+                                                        UserObject userObject = dataSnapshot.getValue(UserObject.class);
+                                                        assert userObject != null;
                                                         savedUserDB.addUser(userObject);
-
-                                                    } else {
-                                                        userObject.setLeaderCountry("");
-
-                                                        savedUserDB.addUser(userObject);
-
-                                                        Log.d("LoginTAG", userObject.getLeaderCountry());
-
                                                     }
                                                 }
 
@@ -196,9 +165,6 @@ public class LoginPage extends Fragment implements View.OnClickListener {
 
                                                 }
                                             });
-
-                                            savedUserDB.addUser(userObject);
-
 
                                             Log.d("TAG", String.valueOf(savedUserDB.totalUsers()));
 
@@ -216,12 +182,7 @@ public class LoginPage extends Fragment implements View.OnClickListener {
 //                                    Toast.makeText(LoginPage.this, authResult.getUser().getUid(), Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            task.addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d("TAG", "Is new user");
-                                }
-                            });
+                            task.addOnFailureListener(e -> Log.d("TAG", "Is new user"));
                         }
                     });
                 }
@@ -234,16 +195,19 @@ public class LoginPage extends Fragment implements View.OnClickListener {
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                boolean value = dataSnapshot.getValue(Boolean.class);
+                if(dataSnapshot.exists()){
+                    Boolean value = dataSnapshot.getValue(Boolean.class);
 
-                Log.d("TAG", String.valueOf(value));
+                    Log.d("TAG", String.valueOf(value));
 
 //                The user is not verified
-                if (!value) {
-                    Log.d("TAG", "User not verified");
+                    if (!value) {
+                        Log.d("TAG", "User not verified");
 
-                    sendVerificationEmail();
+                        sendVerificationEmail();
+                    }
                 }
+
             }
 
             @Override

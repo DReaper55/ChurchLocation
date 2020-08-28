@@ -35,13 +35,16 @@
                         android:layout_marginLeft="50dp"
                         android:layout_centerVertical="true"
                         app:srcCompat="@drawable/find_my_location"
+                        android:visibility="gone"
                         android:layout_toRightOf="@+id/all_locations_textView"/>
 
                     <TextView
                         android:id="@+id/all_locations_textView"
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:text="Find all locations"
+                        android:textAlignment="center"
+                        android:gravity="center"
                         android:layout_centerVertical="true"
                         android:maxLength="@android:integer/config_mediumAnimTime"
                         android:textSize="25sp"

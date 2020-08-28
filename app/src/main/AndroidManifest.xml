@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,9 +20,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.NotificationsPage"></activity>
-        <activity android:name=".Messenger.RecentChatsPage" />
-        <activity android:name=".Messenger.LoginPage" />
+        <activity android:name=".Messenger.ChatScreen"
+            android:label="Chat Screen"
+            android:theme="@style/AppTheme.NoActionBar." />
+        <activity
+            android:name=".Messenger.UserInfoPage"
+            android:label="@string/title_activity_user_info_page"
+            android:theme="@style/AppTheme.NoActionBar.">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Messenger.UserListPage" />
+        </activity>
+        <activity android:name=".Messenger.UserListPage" />
+        <activity
+            android:name=".Activity.EditProfilePage"
+            android:label="@string/title_activity_edit_profile_page"
+            android:theme="@style/AppTheme.NoActionBar." />
+        <activity
+            android:name=".Activity.MyProfilePage"
+            android:label="@string/title_activity_my_profile_page"
+            android:theme="@style/AppTheme.NoActionBar." />
+        <activity
+            android:name=".Activity.NotificationsPage"
+            android:label="@string/title_activity_navigation_page"
+            android:theme="@style/AppTheme.NoActionBar." />
         <activity android:name=".Messenger.RegistrationPage" />
 
         <meta-data

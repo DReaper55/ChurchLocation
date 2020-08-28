@@ -20,15 +20,18 @@
           android:id="@+id/churchID"
           android:layout_width="30dp"
           android:layout_height="50dp"
+          android:visibility="gone"
           android:layout_centerVertical="true"/>
 
       <TextView
           android:id="@+id/mSearchedLocationTextView"
-          android:layout_width="300dp"
-          android:layout_height="wrap_content"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
           android:text="Find my Location"
           android:layout_centerVertical="true"
           android:textColor="@android:color/black"
+          android:textAlignment="center"
+          android:gravity="center"
           android:textSize="25sp"
           android:paddingLeft="10dp"
           android:layout_toRightOf="@+id/churchID"/>
@@ -40,6 +43,7 @@
           android:layout_marginLeft="20dp"
           app:srcCompat="@drawable/find_my_location"
           android:layout_centerVertical="true"
+          android:visibility="gone"
           android:layout_toRightOf="@+id/mSearchedLocationTextView"/>
 
     </RelativeLayout>

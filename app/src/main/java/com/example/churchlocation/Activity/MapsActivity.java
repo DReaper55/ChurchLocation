@@ -17,9 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -29,13 +27,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.churchlocation.Database.DatabaseHandler;
+import com.example.churchlocation.Database.ChurchesDB;
 import com.example.churchlocation.Model.ChurchDistance;
 import com.example.churchlocation.Model.ChurchLocation;
 import com.example.churchlocation.Model.SearchChurchModel;
 import com.example.churchlocation.Utils.ConnectToChurchDB;
-import com.example.churchlocation.Utils.LatLngInterpolator;
-import com.example.churchlocation.Model.MarkerAnimation;
 import com.example.churchlocation.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -47,25 +43,15 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
-
-import static android.content.Context.LOCATION_SERVICE;
 
 public class MapsActivity extends Fragment {
 
@@ -88,7 +74,7 @@ public class MapsActivity extends Fragment {
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
-    private DatabaseHandler db;
+    private ChurchesDB db;
     private ConnectToChurchDB connect = new ConnectToChurchDB();
     private List<SearchChurchModel> listOfChurches;
 

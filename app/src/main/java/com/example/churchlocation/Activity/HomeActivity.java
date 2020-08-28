@@ -1,36 +1,22 @@
 package com.example.churchlocation.Activity;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.churchlocation.Adapter.YoutubeThumbAdapter;
-import com.example.churchlocation.Database.DatabaseHandler;
+import com.example.churchlocation.Database.ChurchesDB;
 import com.example.churchlocation.Database.LinksDB;
 import com.example.churchlocation.Model.TubeThumbs;
 import com.example.churchlocation.R;
 import com.example.churchlocation.Utils.ConnectToChurchDB;
-import com.example.churchlocation.Utils.ConstantsRandom;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,19 +24,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,7 +39,7 @@ public class HomeActivity extends Fragment {
 
     private List<String> linkLists;
 
-    private DatabaseHandler db;
+    private ChurchesDB db;
     private LinksDB linksDB;
     private ConnectToChurchDB connect = new ConnectToChurchDB();
 

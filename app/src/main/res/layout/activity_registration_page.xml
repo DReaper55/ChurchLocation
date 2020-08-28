@@ -17,19 +17,29 @@
             android:layout_height="match_parent"
             android:background="#99000000">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circle_profile_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                app:civ_border_width="3dp"
+                android:layout_marginTop="50dp"/>
+
+            <Button
                 android:id="@+id/profile_image"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
+                android:text="Select Image"
+                android:textColor="@android:color/white"
                 android:background="@drawable/circle" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/lay_fullname"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/oval"
+                android:background="@drawable/oval_chat_left"
                 android:layout_below="@+id/profile_image"
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="10dp"
@@ -52,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.Design.TextInputLayout"
-                android:background="@drawable/oval"
+                android:background="@drawable/oval_chat_left"
                 android:layout_below="@+id/lay_fullname"
                 android:layout_margin="10dp">
 
@@ -75,10 +85,9 @@
                 android:id="@+id/lay_username"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/oval"
+                android:background="@drawable/oval_chat_left"
                 android:layout_below="@+id/lay_email"
-                android:layout_margin="10dp"
-                app:passwordToggleEnabled="true">
+                android:layout_margin="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etUsername"
@@ -95,7 +104,7 @@
                 android:id="@+id/lay_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/oval"
+                android:background="@drawable/oval_chat_left"
                 style="@style/Widget.Design.TextInputLayout"
                 android:layout_below="@+id/lay_username"
                 android:layout_margin="10dp"
@@ -174,15 +183,25 @@
             </RadioGroup>
 
             <Spinner
-                android:id="@+id/leaderCountrySelection"
+                android:id="@+id/churchCountrySelection"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:background="#CCFFFFFF"
-                android:visibility="gone"
+                android:tooltipText="Select Country"
                 android:layout_below="@+id/radioGroup"/>
+
+            <Spinner
+                android:id="@+id/churchStateSelection"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_below="@+id/churchCountrySelection"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:background="#CCFFFFFF" />
 
             <Spinner
                 android:id="@+id/churchDenominations"
@@ -191,8 +210,9 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
+                android:tooltipText="Select Church"
                 android:background="#CCFFFFFF"
-                android:layout_below="@+id/leaderCountrySelection"/>
+                android:layout_below="@+id/churchStateSelection"/>
 
             <Button
                 android:id="@+id/etRegisterUser"

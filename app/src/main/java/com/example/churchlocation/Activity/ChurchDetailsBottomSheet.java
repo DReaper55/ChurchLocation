@@ -6,21 +6,17 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.churchlocation.Database.DatabaseHandler;
+import com.example.churchlocation.Database.ChurchesDB;
 import com.example.churchlocation.Model.SearchChurchModel;
 import com.example.churchlocation.R;
 import com.example.churchlocation.Utils.ConnectToChurchDB;
@@ -29,22 +25,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 public class ChurchDetailsBottomSheet extends BottomSheetDialogFragment {
-    private DatabaseHandler db;
+    private ChurchesDB db;
     private ConnectToChurchDB connect = new ConnectToChurchDB();
 
     List<SearchChurchModel> churchModelArrayList;

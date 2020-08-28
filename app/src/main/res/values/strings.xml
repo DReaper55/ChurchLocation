@@ -29,4 +29,15 @@
         <item>9eYs5hZpNMs</item>
         <item>VL2Ymla4bNI</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_navigation_page">NavigationPage</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="disciple_request_alertDialog">Do you confirm that this person is a disciple and is spiritually well enough to be allowed on the platform?</string>
+    <string name="leader_request_alertDialog">Do you confirm that this person is a church leader?</string>
+    <string name="title_activity_my_profile_page">My Profile</string>
+    <string name="title_activity_edit_profile_page">Edit Profile</string>
+    <string name="title_activity_user_info_page">User Info</string>
 </resources>

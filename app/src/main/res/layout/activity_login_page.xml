@@ -21,7 +21,7 @@
             android:id="@+id/lay_email"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="@drawable/oval"
+            android:background="@drawable/oval_chat_left"
             android:layout_marginTop="150dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp">
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_below="@+id/lay_email"
-            android:background="@drawable/oval"
+            android:background="@drawable/oval_chat_left"
             android:layout_marginTop="30dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"

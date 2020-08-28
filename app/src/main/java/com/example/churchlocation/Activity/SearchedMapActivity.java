@@ -6,17 +6,14 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.churchlocation.Database.DatabaseHandler;
+import com.example.churchlocation.Database.ChurchesDB;
 import com.example.churchlocation.Model.SearchChurchModel;
 import com.example.churchlocation.R;
 import com.example.churchlocation.Utils.ConnectToChurchDB;
@@ -25,23 +22,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchedMapActivity extends AppCompatActivity {
     List<SearchChurchModel> churchModelArrayList;
 
-    private DatabaseHandler db;
+    private ChurchesDB db;
     private ConnectToChurchDB connect = new ConnectToChurchDB();
 
     TextView name_of_church, church_leader_name, church_members_number,

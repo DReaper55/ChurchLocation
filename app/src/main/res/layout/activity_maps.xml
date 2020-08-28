@@ -27,7 +27,7 @@
         android:id="@+id/relateLayoutId"
         android:layout_width="350dp"
         android:layout_height="50dp"
-        android:background="@drawable/oval"
+        android:background="@drawable/oval_chat_left"
         android:orientation="vertical"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true">

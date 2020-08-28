@@ -1,15 +1,11 @@
 package com.example.churchlocation.Utils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
-import com.example.churchlocation.Database.DatabaseHandler;
+import com.example.churchlocation.Database.ChurchesDB;
 import com.example.churchlocation.Database.LinksDB;
 import com.example.churchlocation.Model.SearchChurchModel;
-import com.example.churchlocation.R;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,8 +13,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -27,13 +21,13 @@ import androidx.annotation.Nullable;
 public class ConnectToChurchDB {
     private SearchChurchModel searchChurchModelDB = new SearchChurchModel();
 
-    private DatabaseHandler db;
+    private ChurchesDB db;
     private LinksDB linksDB;
 
-    public DatabaseHandler getChurches(Context context){
+    public ChurchesDB getChurches(Context context){
         FirebaseApp.initializeApp(context);
 
-        db = new DatabaseHandler(context);
+        db = new ChurchesDB(context);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mRef = database.getReference("churches");

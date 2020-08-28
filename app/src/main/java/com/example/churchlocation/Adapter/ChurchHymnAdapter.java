@@ -21,26 +21,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class myAdapter extends RecyclerView.Adapter<myAdapter.ViewHolder> implements Filterable {
+public class ChurchHymnAdapter extends RecyclerView.Adapter<ChurchHymnAdapter.ViewHolder> implements Filterable {
     private Context context;
     private List<ListItem> listItems;
     private List<ListItem> listItemList;
 
-    public myAdapter(Context context, List<ListItem> listItems) {
+    public ChurchHymnAdapter(Context context, List<ListItem> listItems) {
         this.context = context;
         this.listItems = listItems;
         listItemList = new ArrayList<>(listItems);
     }
 
     @Override
-    public myAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ChurchHymnAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.hymn_list_item, viewGroup, false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull myAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ChurchHymnAdapter.ViewHolder viewHolder, int i) {
 
         ListItem item = listItems.get(i);
 

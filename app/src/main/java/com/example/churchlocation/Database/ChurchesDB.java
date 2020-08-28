@@ -14,10 +14,10 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
-public class DatabaseHandler extends SQLiteOpenHelper {
+public class ChurchesDB extends SQLiteOpenHelper {
     private Context context;
 
-    public DatabaseHandler(@Nullable Context context) {
+    public ChurchesDB(@Nullable Context context) {
         super(context, ChurchDBConstants.DB_NAME, null, ChurchDBConstants.DB_VERSION);
         this.context = context;
     }

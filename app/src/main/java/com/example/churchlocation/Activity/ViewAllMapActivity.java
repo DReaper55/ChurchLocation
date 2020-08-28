@@ -2,21 +2,14 @@ package com.example.churchlocation.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.example.churchlocation.Database.DatabaseHandler;
+import com.example.churchlocation.Database.ChurchesDB;
 import com.example.churchlocation.Model.SearchChurchModel;
 import com.example.churchlocation.R;
 import com.example.churchlocation.Utils.ConnectToChurchDB;
 import com.example.churchlocation.Utils.ConstantsRandom;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -26,19 +19,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-        public class ViewAllMapActivity extends AppCompatActivity{
-            private DatabaseHandler db;
+public class ViewAllMapActivity extends AppCompatActivity{
+            private ChurchesDB db;
             private ConnectToChurchDB connect = new ConnectToChurchDB();
 
             List<SearchChurchModel> churchModelArrayList;
